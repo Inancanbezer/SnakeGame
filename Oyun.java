@@ -57,7 +57,7 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
     int with = 20 ;
     int HeadX = 400;
     int HeadY = 300;
-    int HeadDirX = 10;
+    int HeadDirX = 20;
     int HeadDirY = 0;
     int paint = 0 ;
     int[] temp ;
@@ -79,6 +79,17 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
         int[] Rand =new int[2]; 
         Rand[0] = 100+(random.nextInt(33)*20);
         Rand[1] = 100+(random.nextInt(23)*20);
+        for(int i = kuyruklar.size()-1 ; i > 0 ; i-- ){
+            //System.out.println(i);
+            if(Rand[0]==kuyruklar.get(i).getX() && Rand[1]==kuyruklar.get(i).getY()){
+                System.out.println("2" + Rand[0] + " " +Rand[1]);
+                Bait();
+                System.out.println("1" + Rand[0] +" "+Rand[1]);
+            }else{
+                
+            } 
+        }
+       
         return Rand;
     } 
    
@@ -97,7 +108,7 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
         if(Bait_exist){
             g.setColor(Color.CYAN);
             g.fillRect(temp[0],temp[1], with, with);
-            System.out.println(temp[0] +"bait"+ temp[1]);
+            //System.out.println(temp[0] +"bait"+ temp[1]);
         }
         //g.setColor(Color.red);
         //g.fillRect(HeadX,HeadY, 10, 10);
@@ -129,21 +140,21 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
     public void keyPressed(KeyEvent e) {
         int c = e.getKeyCode();
         if (c==KeyEvent.VK_LEFT){
-            if(HeadX>sizeX_s){
+            if(HeadX>sizeX_s && HeadDirX!=with){
                 HeadDirX = -with ;
                 HeadDirY = 0 ;
             }
-        }else if (c==KeyEvent.VK_UP) {
+        }else if (c==KeyEvent.VK_UP && HeadDirY!=with) {
             if(HeadY>sizeY_s){
                 HeadDirY = -with ;
                 HeadDirX = 0 ; 
             }    
-        }else if (c==KeyEvent.VK_DOWN) {
+        }else if (c==KeyEvent.VK_DOWN && HeadDirY!=-with) {
             if(HeadY<sizeY_f+sizeY_s*2){
                 HeadDirY = with ;
                 HeadDirX= 0; 
             }
-        }else if (c==KeyEvent.VK_RIGHT) {
+        }else if (c==KeyEvent.VK_RIGHT && HeadDirX!=-with) {
             if(HeadX<sizeX_f+sizeX_s*2){
                 HeadDirX = with ;
                 HeadDirY = 0;
@@ -161,7 +172,7 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
         try {
             if(!Bait_exist){
                 temp= Bait();
-                System.out.println("here");
+                //System.out.println("here");
                 Bait_exist = true ; 
             }else{
                 Bait_exist = false ; 
