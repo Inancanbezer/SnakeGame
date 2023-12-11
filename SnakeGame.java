@@ -16,6 +16,7 @@ public class SnakeGame extends JFrame{
         ekran.setFocusable(false);
         
         ekran.setSize(1100,800);
+        //ekran.setSize(900,600);
         ekran.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         Oyun oyun = new Oyun(); 

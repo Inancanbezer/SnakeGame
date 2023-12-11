@@ -13,6 +13,7 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import jdk.nashorn.internal.objects.Global;
 
 class Kuyruk {
     private int x;
@@ -51,9 +52,9 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
     int gecen_sure = 0 ;
     int tail = 0 ;
     int sizeX_s = 100;
-    int sizeY_s = 50;
+    int sizeY_s = 100;
     int sizeX_f = 800;
-    int sizeY_f = 600;
+    int sizeY_f = 500;
     int with = 20 ;
     int HeadX = 400;
     int HeadY = 300;
@@ -61,10 +62,13 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
     int HeadDirY = 0;
     int paint = 0 ;
     int[] temp ;
+    int temp_y = 0; 
+    int temp_x=0 ; 
+    
     Random random = new Random();
     boolean Bait_exist ; 
     public boolean  kontrolEt (){
-        if(sizeX_s-with/2<=HeadX && HeadX<=sizeX_f+sizeX_s*2-with/2 && sizeY_s-with/2<=HeadY && HeadY<=sizeY_f+sizeY_s*2-with/2){
+        if(sizeX_s-with*2<HeadX && HeadX<=sizeX_f+2*sizeX_s && HeadY+2>=sizeY_s && HeadY<=sizeY_f+sizeY_s*2){
             return false;
         }else{
             return true;
@@ -75,6 +79,10 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
         timer.start();
     }
     
+    public void yazi(int i ){
+        System.out.println(i);
+    }
+    
     public int[] Bait(){
         int[] Rand =new int[2]; 
         Rand[0] = 100+(random.nextInt(33)*20);
@@ -82,9 +90,9 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
         for(int i = kuyruklar.size()-1 ; i > 0 ; i-- ){
             //System.out.println(i);
             if(Rand[0]==kuyruklar.get(i).getX() && Rand[1]==kuyruklar.get(i).getY()){
-                System.out.println("2" + Rand[0] + " " +Rand[1]);
+                //System.out.println("2" + Rand[0] + " " +Rand[1]);
                 Bait();
-                System.out.println("1" + Rand[0] +" "+Rand[1]);
+                //System.out.println("1" + Rand[0] +" "+Rand[1]);
             }else{
                 
             } 
@@ -92,13 +100,36 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
        
         return Rand;
     } 
-   
+
+    
+    
+    
     @Override
     public void paint(Graphics g) {
         super.paint(g); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
         g.setColor(Color.GRAY);
         g.drawRect(sizeX_s,sizeY_s,sizeX_s+sizeX_f,sizeY_s+sizeY_f);
         gecen_sure += 100 ;
+        
+        g.create(); 
+        for (temp_x = 0  ; temp_x<(sizeX_f+sizeX_s) ; temp_x += with ){
+            for(temp_y = 0 ; temp_y<(sizeY_f+sizeY_s); temp_y += with ){
+                //System.out.println("temp_x" + temp_x);
+                g.setColor(Color.GRAY);
+                g.fillRect(sizeX_s+temp_x,sizeY_s+temp_y+1, with-1, with-1);
+                System.out.println("1="+temp_x+"\n2="+temp_y);
+                System.out.println("\n3="+sizeX_f+"\n4="+sizeX_s+"\n5="+sizeY_f+"\n6="+sizeY_s);
+        
+            }
+        }     
+        
+        for(int i = 0 ; i< kuyruklar.size(); i++){
+            g.setColor(Color.red);
+            g.fillRect(kuyruklar.get(i).getX(),kuyruklar.get(i).getY(), with, with);
+            g.setColor(Color.BLUE);
+            g.drawRect(kuyruklar.get(i).getX(),kuyruklar.get(i).getY(), with, with);
+        }
+        g.create();    
         if(kontrolEt()){
             timer.stop();
             String message = "Kazandiniz......\n";
@@ -106,17 +137,10 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
             System.exit(0);    
         }
         if(Bait_exist){
+            
             g.setColor(Color.CYAN);
             g.fillRect(temp[0],temp[1], with, with);
             //System.out.println(temp[0] +"bait"+ temp[1]);
-        }
-        //g.setColor(Color.red);
-        //g.fillRect(HeadX,HeadY, 10, 10);
-        for(int i = 0 ; i< kuyruklar.size(); i++){
-            g.setColor(Color.red);
-            g.fillRect(kuyruklar.get(i).getX(),kuyruklar.get(i).getY(), with, with);
-            g.setColor(Color.BLUE);
-            g.drawRect(kuyruklar.get(i).getX(),kuyruklar.get(i).getY(), with, with);
         }
 
         g.setColor(Color.WHITE);
@@ -124,7 +148,11 @@ public class Oyun extends JPanel implements KeyListener,ActionListener{
         g.drawString("X:"+HeadX +"Y:" + HeadY , sizeX_f+sizeX_s*3/2, sizeY_s);
         g.drawString("\n"+gecen_sure/1000.0 , sizeX_f+sizeX_s*3/2, 240);
         g.drawString("\n"+kuyruklar.size(), sizeX_f+sizeX_s*3/2, 260);
-        g.drawString("\n"+temp[0]+"  "+temp[1], sizeX_f+sizeX_s*3/2, 280);
+        try {
+            g.drawString("\n"+temp[0]+"  "+temp[1], sizeX_f+sizeX_s*3/2, 280);
+        } catch (Exception e) {
+        }
+        
     }
 
     @Override
