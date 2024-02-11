@@ -15,12 +15,14 @@ public class SnakeGame extends JFrame{
         ekran.setResizable(false);
         ekran.setFocusable(false);
         
-        ekran.setSize(1100,800);
+        ekran.setSize(700,600);
+        //ekran.setSize(900,600);
         ekran.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         Oyun oyun = new Oyun(); 
         oyun.requestFocus(); 
         oyun.addKeyListener(oyun);
+        
         oyun.setFocusable(true);
         oyun.setFocusTraversalKeysEnabled(false);
         ekran.add(oyun);
